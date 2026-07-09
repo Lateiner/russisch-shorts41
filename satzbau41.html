@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russisch lernen: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; max-width: 800px; margin: auto; background: #f4f4f9; }
+        .sentence-box { background: white; padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .drop-zone { border: 2px dashed #3498db; padding: 10px; display: inline-block; min-width: 120px; min-height: 25px; border-radius: 5px; cursor: pointer; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .word { padding: 10px 15px; background: #3498db; color: white; border-radius: 5px; cursor: grab; user-select: none; }
+        .correct { background: #27ae60 !important; }
+        .incorrect { background: #e74c3c !important; }
+        button { padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Übung: в среднем</h1>
+    <p>Klicke auf ein Wort aus der Wortwolke und dann auf das Lückenfeld, um den Satz zu vervollständigen.</p>
+
+    <div id="game-container"></div>
+    <button onclick="location.reload()">Neustart</button>
+
+    <script>
+        const tasks = [
+            { text: "Бутылка молока [LÜCKE] 80 рублей.", solution: "в среднем" },
+            { text: "Я работаю [LÜCKE] 8 часов в день.", solution: "в среднем" },
+            { text: "Зимой [LÜCKE] минус 10 градусов.", solution: "в среднем" },
+            { text: "Книга стоит [LÜCKE] 500 рублей.", solution: "в среднем" },
+            { text: "Мы гуляем [LÜCKE] 1 час вечером.", solution: "врень" } // Hier zur Demo: Fehler provozierbar
+        ];
+
+        // Korrektur für Demo: Alle Lösungen müssen в среднем sein
+        tasks.forEach(t => t.solution = "в среднем");
+
+        const container = document.getElementById('game-container');
+        let selectedWord = null;
+
+        tasks.forEach((task, index) => {
+            const div = document.createElement('div');
+            div.className = 'sentence-box';
+            div.innerHTML = task.text.replace('[LÜCKE]', '<span class="drop-zone" onclick="drop(this)">---</span>');
+            container.appendChild(div);
+        });
+
+        const wordBank = document.createElement('div');
+        wordBank.className = 'word-bank';
+        ['в среднем', 'всегда', 'очень', 'быстро'].forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'word';
+            span.innerText = w;
+            span.onclick = () => selectedWord = w;
+            wordBank.appendChild(span);
+        });
+        container.prepend(wordBank);
+
+        function drop(zone) {
+            if (!selectedWord) return;
+            zone.innerText = selectedWord;
+            if (selectedWord === "в среднем") {
+                zone.className = "drop-zone correct";
+            } else {
+                zone.className = "drop-zone incorrect";
+            }
+            selectedWord = null;
+        }
+    </script>
+</body>
+</html>
