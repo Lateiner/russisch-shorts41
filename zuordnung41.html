@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zuordnungsspiel: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f9; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
+        .item { background: white; padding: 20px; border-radius: 10px; cursor: pointer; border: 2px solid #ccc; transition: 0.3s; font-size: 24px; }
+        .item:hover { border-color: #3498db; }
+        .drop-zone { border: 3px dashed #3498db; padding: 40px; margin-top: 30px; border-radius: 10px; min-height: 100px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .selected { background: #27ae60; color: white; border-color: #27ae60; }
+        h2 { color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+    <h2>Ordne zu: Wann passt "в среднем"?</h2>
+    <p>Klicke auf die Symbole, die eine Schwankung oder einen Durchschnittswert beschreiben.</p>
+
+    <div class="grid">
+        <div class="item" onclick="select(this, true)">💰</div>
+        <div class="item" onclick="select(this, false)">🛑</div>
+        <div class="item" onclick="select(this, true)">⏱️</div>
+        <div class="item" onclick="select(this, false)">📍</div>
+        <div class="item" onclick="select(this, true)">🌡️</div>
+    </div>
+
+    <div class="drop-zone" id="target" ondrop="drop(event)" ondragover="allowDrop(event)">
+        Hierher klicken, wenn es "im Durchschnitt" ist.
+    </div>
+
+    <button style="margin-top:20px;" onclick="location.reload()">Neustart</button>
+
+    <script>
+        function select(el, isCorrect) {
+            if (isCorrect) {
+                el.style.backgroundColor = "#27ae60";
+                el.style.color = "white";
+                document.getElementById('target').appendChild(el);
+                el.onclick = null;
+            } else {
+                el.style.backgroundColor = "#e74c3c";
+                setTimeout(() => el.style.backgroundColor = "white", 500);
+            }
+        }
+    </script>
+</body>
+</html>
