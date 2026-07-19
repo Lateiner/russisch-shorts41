@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russisch-Quiz: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; max-width: 600px; margin: auto; background: #f9f9f9; }
+        .question-box { background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .option { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #eee; border: none; border-radius: 5px; cursor: pointer; text-align: left; font-size: 16px; transition: background 0.3s; }
+        .option:hover { background: #e0e0e0; }
+        .correct { background: #27ae60 !important; color: white; }
+        .incorrect { background: #e74c3c !important; color: white; }
+        button#reset { padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <h2>Welcher Satz ist logisch korrekt?</h2>
+    <p>Wähle den Satz aus, in dem <strong>в среднем</strong> sinnvoll verwendet wird.</p>
+
+    <div id="quiz-container"></div>
+    <button id="reset" onclick="location.reload()">Neustart</button>
+
+    <script>
+        const quizData = [
+            {
+                options: [
+                    "Бутылка молока стоит в среднем 80 рублей.",
+                    "Я в среднем никогда не ем суп.",
+                    "В среднем это дерево выше, чем дом."
+                ],
+                correct: 0
+            },
+            {
+                options: [
+                    "Сегодня в среднем идет дождь.",
+                    "Мы в среднем работаем 8 часов в день.",
+                    "В среднем я очень люблю кофе."
+                ],
+                correct: 1
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+
+        quizData.forEach((item, index) => {
+            const box = document.createElement('div');
+            box.className = 'question-box';
+            
+            item.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.innerText = opt;
+                btn.onclick = function() {
+                    if (i === item.correct) {
+                        btn.className = 'option correct';
+                    } else {
+                        btn.className = 'option incorrect';
+                    }
+                };
+                box.appendChild(btn);
+            });
+            container.appendChild(box);
+        });
+    </script>
+</body>
+</html>
