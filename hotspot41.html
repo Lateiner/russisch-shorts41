@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bild-Hotspot-Analyse: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f9; color: #2c3e50; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .shelf-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
+        .hotspot-card { background: #eef2f7; border: 2px dashed #3498db; padding: 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 16px; }
+        .hotspot-card:hover { background: #e0e8f1; }
+        .hotspot-card.active { border-style: solid; background: #d4edda; border-color: #27ae60; font-weight: bold; }
+        .step-section { margin-top: 25px; display: none; }
+        .cards-grid { display: flex; gap: 15px; justify-content: center; margin-top: 15px; }
+        .num-card { background: #3498db; color: white; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.2s; }
+        .num-card:hover { background: #2980b9; }
+        .feedback { font-size: 18px; font-weight: bold; margin-top: 20px; min-height: 30px; }
+        .correct { color: #27ae60; }
+        .incorrect { color: #e74c3c; }
+        button { padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; font-size: 16px; margin-top: 15px; }
+        button:hover { background: #34495e; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Supermarkt-Regal Analyse</h2>
+        <p id="instruction">Klicke auf die drei Regale (Hotspots), um die Milchpreise in verschiedenen Geschäften zu entdecken:</p>
+        
+        <!-- Hotspot-Bereich (Simuliertes Regal) -->
+        <div class="shelf-box" id="shelfBox">
+            <div class="hotspot-card" onclick="revealPrice(this, 70, 1)">🛒<br>Laden A<br><span class="val">?</span></div>
+            <div class="hotspot-card" onclick="revealPrice(this, 85, 2)">🛒<br>Laden B<br><span class="val">?</span></div>
+            <div class="hotspot-card" onclick="revealPrice(this, 90, 3)">🛒<br>Laden C<br><span class="val">?</span></div>
+        </div>
+
+        <div class="feedback" id="feedbackMsg">Entdeckte Preise: 0 / 3</div>
+
+        <!-- Schritt 2: Durchschnittswert auswählen -->
+        <div class="step-section" id="step2">
+            <p>Du hast alle Werte entdeckt (70, 85, 90 Rubel). Wie viel kostet die Milch <strong>в среднем</strong>?</p>
+            <div class="cards-grid">
+                <div class="num-card" onclick="checkAverage(75)">75 Rubel</div>
+                <div class="num-card" onclick="checkAverage(82)">82 Rubel</div>
+                <div class="num-card" onclick="checkAverage(95)">95 Rubel</div>
+            </div>
+        </div>
+
+        <div id="finalFeedback" class="feedback"></div>
+
+        <button onclick="location.reload()">Neu starten</button>
+    </div>
+
+    <script>
+        let discoveredCount = 0;
+
+        function revealPrice(card, price, id) {
+            if (card.classList.contains('active')) return; // Bereits geklickt
+
+            card.classList.add('active');
+            card.querySelector('.val').innerText = price + " Rubel";
+            discoveredCount++;
+
+            document.getElementById('feedbackMsg').innerText = `Entdeckte Preise: ${discoveredCount} / 3`;
+
+            if (discoveredCount === 3) {
+                document.getElementById('instruction').innerText = "Super! Jetzt wähle den passenden Durchschnittswert aus:";
+                document.getElementById('step2').style.display = "block";
+            }
+        }
+
+        function checkAverage(selectedVal) {
+            const finalMsg = document.getElementById('finalFeedback');
+            // Der mathematische Durchschnitt aus 70, 85, 90 ist ca. 81.67 -> gerundet 82
+            if (selectedVal === 82) {
+                finalMsg.innerText = "Hervorragend! 82 Rubel ist der korrekte Wert в среднем.";
+                finalMsg.className = "feedback correct";
+            } else {
+                finalMsg.innerText = "Das ist leider nicht ganz korrekt. Probiere es noch einmal!";
+                finalMsg.className = "feedback incorrect";
+            }
+        }
+    </script>
+</body>
+</html>
