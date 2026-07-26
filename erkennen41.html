@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klick-Highlighting: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f9; color: #2c3e50; }
+        .container { max-width: 650px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .text-box { font-size: 18px; line-height: 2.2; text-align: left; margin: 25px 0; padding: 20px; background: #fafbfc; border-radius: 8px; border: 1px solid #e1e4e8; }
+        .word { padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s; display: inline-block; margin: 2px; }
+        .word:hover { background-color: #e1f5fe; }
+        /* Markierungs-Stile durch den Schüler */
+        .highlighted { background-color: #ffeb3b !important; border-bottom: 2px solid #fbc02d; }
+        .feedback { font-size: 18px; font-weight: bold; margin-top: 20px; min-height: 30px; }
+        .correct { color: #27ae60; }
+        .incorrect { color: #e74c3c; }
+        button { padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; font-size: 16px; margin-top: 15px; }
+        button:hover { background: #34495e; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Finde den Ausdruck!</h2>
+        <p>Tippe im folgenden Text auf alle Stellen, an denen der Ausdruck <strong>в среднем</strong> vorkommt:</p>
+        
+        <div class="text-box" id="textBox">
+            <!-- Text aufgeteilt in klickbare Wort-Spans -->
+            <span class="word" onclick="toggleWord(this, false)">В</span> 
+            <span class="word" onclick="toggleWord(this, false)">России</span> 
+            <span class="word" onclick="toggleWord(this, false)">цены</span> 
+            <span class="word" onclick="toggleWord(this, false)">разные.</span> 
+            <span class="word" onclick="toggleWord(this, true)">в среднем</span> 
+            <span class="word" onclick="toggleWord(this, false)">бутылка</span> 
+            <span class="word" onclick="toggleWord(this, false)">молока</span> 
+            <span class="word" onclick="toggleWord(this, false)">стоит</span> 
+            <span class="word" onclick="toggleWord(this, false)">80</span> 
+            <span class="word" onclick="toggleWord(this, false)">рублей.</span> 
+            <span class="word" onclick="toggleWord(this, false)">Люди</span> 
+            <span class="word" onclick="toggleWord(this, true)">в среднем</span> 
+            <span class="word" onclick="toggleWord(this, false)">работают</span> 
+            <span class="word" onclick="toggleWord(this, false)">8</span> 
+            <span class="word" onclick="toggleWord(this, false)">часов</span> 
+            <span class="word" onclick="toggleWord(this, false)">в</span> 
+            <span class="word" onclick="toggleWord(this, false)">день.</span> 
+            <span class="word" onclick="toggleWord(this, false)">Зимой</span> 
+            <span class="word" onclick="toggleWord(this, true)">в среднем</span> 
+            <span class="word" onclick="toggleWord(this, false)">бывает</span> 
+            <span class="word" onclick="toggleWord(this, false)">холодно.</span>
+        </div>
+
+        <div class="feedback" id="feedbackMsg">Markierte richtige Vorkommen: 0 / 3</div>
+
+        <button onclick="location.reload()">Neu starten</button>
+    </div>
+
+    <script>
+        const totalTargets = 3;
+        let foundCount = 0;
+        let incorrectClicks = 0;
+
+        function toggleWord(element, isTarget) {
+            // Wenn bereits markiert, beim erneuten Klick die Markierung aufheben
+            if (element.classList.contains('highlighted')) {
+                element.classList.remove('highlighted');
+                if (isTarget) {
+                    foundCount--;
+                } else {
+                    incorrectClicks--;
+                }
+            } else {
+                element.classList.add('highlighted');
+                if (isTarget) {
+                    foundCount++;
+                } else {
+                    incorrectClicks++;
+                }
+            }
+
+            updateFeedback();
+        }
+
+        function updateFeedback() {
+            const msg = document.getElementById('feedbackMsg');
+
+            if (incorrectClicks > 0) {
+                msg.innerText = "Achtung, du hast auch Wörter markiert, die nicht dazugehören!";
+                msg.className = "feedback incorrect";
+            } else if (foundCount === totalTargets) {
+                msg.innerText = "Hervorragend! Du hast alle Vorkommen von в среднем gefunden!";
+                msg.className = "feedback correct";
+            } else {
+                msg.innerText = `Markierte richtige Vorkommen: ${foundCount} / ${totalTargets}`;
+                msg.className = "feedback";
+            }
+        }
+    </script>
+</body>
+</html>
