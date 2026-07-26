@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finde den Fehler: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f9; color: #2c3e50; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .sentence-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; text-align: left; }
+        .sentence-card { background: #eef2f7; border: 2px solid #d1d8e0; padding: 15px 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 16px; }
+        .sentence-card:hover { border-color: #3498db; background: #e0e8f1; }
+        .correct-pick { background: #d4edda !important; border-color: #27ae60 !important; color: #155724; font-weight: bold; }
+        .wrong-pick { background: #f8d7da !important; border-color: #e74c3c !important; color: #721c24; }
+        .feedback { font-size: 18px; font-weight: bold; margin-top: 20px; min-height: 40px; }
+        button { padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; font-size: 16px; margin-top: 15px; }
+        button:hover { background: #34495e; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Finde den Fehler!</h2>
+        <p>In welchem der folgenden Sätze ist <strong>в среднем</strong> logisch oder grammatikalisch falsch platziert? Klicke auf den falschen Satz:</p>
+        
+        <div class="sentence-list" id="sentenceList">
+            <div class="sentence-card" onclick="checkError(this, false)">
+                1. Бутылка молока стоит в среднем 80 рублей.
+            </div>
+            <div class="sentence-card" onclick="checkError(this, false)">
+                2. Мы работаем в среднем 8 часов в день.
+            </div>
+            <div class="sentence-card" onclick="checkError(this, true)">
+                3. Я в среднем никогда не ем суп.
+            </div>
+            <div class="sentence-card" onclick="checkError(this, false)">
+                4. Зимой бывает в среднем минус 10 градусов.
+            </div>
+        </div>
+
+        <div class="feedback" id="feedbackMsg"></div>
+
+        <button onclick="location.reload()">Neu starten</button>
+    </div>
+
+    <script>
+        function checkError(cardElement, isError) {
+            // Alle Karten deaktivieren nach der Auswahl
+            const cards = document.getElementsByClassName('sentence-card');
+            for (let card of cards) {
+                card.style.pointerEvents = "none";
+            }
+
+            const msg = document.getElementById('feedbackMsg');
+
+            if (isError) {
+                cardElement.classList.add('correct-pick');
+                msg.innerText = "Richtig gefunden! „Niemals“ ist absolut und schließt einen Durchschnitt aus.";
+                msg.style.color = "#27ae60";
+            } else {
+                cardElement.classList.add('wrong-pick');
+                msg.innerText = "Das ist falsch. Dieser Satz ist völlig korrekt. Versuche es noch einmal!";
+                msg.style.color = "#e74c3c";
+            }
+        }
+    </script>
+</body>
+</html>
