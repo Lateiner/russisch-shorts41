@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wahr oder Falsch: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f9; color: #2c3e50; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .statement-box { background: #eef2f7; padding: 20px; border-radius: 8px; margin-bottom: 25px; font-size: 18px; line-height: 1.5; font-weight: bold; }
+        .button-group { display: flex; gap: 15px; justify-content: center; }
+        .btn-choice { flex: 1; padding: 15px; font-size: 18px; font-weight: bold; cursor: pointer; border: none; border-radius: 8px; color: white; transition: 0.2s; }
+        .btn-true { background-color: #27ae60; }
+        .btn-true:hover { background-color: #219653; }
+        .btn-false { background-color: #e74c3c; }
+        .btn-false:hover { background-color: #c0392b; }
+        .feedback { margin-top: 25px; font-size: 18px; font-weight: bold; min-height: 40px; }
+        .correct-feedback { color: #27ae60; }
+        .incorrect-feedback { color: #e74c3c; }
+        button.restart { margin-top: 20px; padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; font-size: 16px; width: 100%; }
+        button.restart:hover { background: #34495e; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Wahr oder Falsch?</h2>
+        <p>Prüfe die mathematische Logik hinter der Verwendung von <strong>в среднем</strong>:</p>
+        
+        <div class="statement-box" id="statementText">
+            Laden 1: 70 Rubel, Laden 2: 90 Rubel. Also ist der Durchschnitt (в среднем) 100 Rubel.
+        </div>
+
+        <div class="button-group" id="buttonGroup">
+            <button class="btn-choice btn-true" onclick="checkAnswer(true)">Wahr</button>
+            <button class="btn-choice btn-false" onclick="checkAnswer(false)">Falsch</button>
+        </div>
+
+        <div class="feedback" id="feedbackMsg"></div>
+
+        <button class="restart" onclick="location.reload()">Neustart</button>
+    </div>
+
+    <script>
+        // Die Aussage ist mathematisch falsch (der Durchschnitt liegt bei 80)
+        const isStatementTrue = false; 
+
+        function checkAnswer(userChoice) {
+            const msg = document.getElementById('feedbackMsg');
+            const buttons = document.getElementById('buttonGroup');
+
+            // Deaktiviere weitere Klicks nach der Auswahl
+            buttons.style.pointerEvents = "none";
+
+            if (userChoice === isStatementTrue) {
+                msg.innerText = "Richtig! Der Durchschnitt aus 70 und 90 liegt bei 80, nicht bei 100.";
+                msg.className = "feedback correct-feedback";
+            } else {
+                msg.innerText = "Falsch! Der Durchschnitt aus 70 und 90 kann nicht höher sein als beide Werte zusammen.";
+                msg.className = "feedback incorrect-feedback";
+            }
+        }
+    </script>
+</body>
+</html>
