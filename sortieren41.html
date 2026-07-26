@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satz ordnen: в среднем</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; background: #f4f4f9; color: #2c3e50; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .target-box { min-height: 60px; border: 2px dashed #3498db; border-radius: 8px; padding: 15px; margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; background: #fdfdfd; }
+        .pool-box { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px; min-height: 50px; }
+        .word-chip { background: #3498db; color: white; padding: 10px 15px; border-radius: 6px; cursor: pointer; user-select: none; font-size: 16px; transition: 0.2s; }
+        .word-chip:hover { background: #2980b9; }
+        .feedback { font-size: 18px; font-weight: bold; min-height: 30px; margin-bottom: 20px; }
+        .correct { color: #27ae60; }
+        .incorrect { color: #e74c3c; }
+        button { padding: 10px 20px; cursor: pointer; background: #2c3e50; color: white; border: none; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #34495e; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Bilde einen korrekten Satz!</h2>
+        <p>Tippe auf die Wörter in der richtigen Reihenfolge:</p>
+        
+        <div class="target-box" id="targetBox">
+            <span style="color: #95a5a6; font-style: italic;" id="placeholder">Deine Wörter erscheinen hier...</span>
+        </div>
+
+        <div class="pool-box" id="poolBox">
+            <div class="word-chip" onclick="moveWord(this)">в среднем</div>
+            <div class="word-chip" onclick="moveWord(this)">стоит</div>
+            <div class="word-chip" onclick="moveWord(this)">80</div>
+            <div class="word-chip" onclick="moveWord(this)">Бутылка</div>
+            <div class="word-chip" onclick="moveWord(this)">молока</div>
+            <div class="word-chip" onclick="moveWord(this)">рублей.</div>
+        </div>
+
+        <div class="feedback" id="feedbackMsg"></div>
+
+        <button onclick="location.reload()">Neu starten</button>
+    </div>
+
+    <script>
+        const correctOrder = ["Бутылка", "молока", "стоит", "в среднем", "80", "рублей."];
+
+        function moveWord(chip) {
+            const targetBox = document.getElementById('targetBox');
+            const placeholder = document.getElementById('placeholder');
+            const msg = document.getElementById('feedbackMsg');
+            
+            if (placeholder) {
+                placeholder.remove();
+            }
+
+            if (chip.parentNode.id === 'poolBox') {
+                targetBox.appendChild(chip);
+            } else {
+                document.getElementById('poolBox').appendChild(chip);
+                if (targetBox.children.length === 0) {
+                    targetBox.innerHTML = '<span style="color: #95a5a6; font-style: italic;" id="placeholder">Deine Wörter erscheinen hier...</span>';
+                    msg.innerText = "";
+                    return;
+                }
+            }
+
+            // Sofortige Überprüfung nach jeder Änderung
+            const chips = targetBox.getElementsByClassName('word-chip');
+            let userSequence = [];
+            for (let c of chips) {
+                userSequence.push(c.innerText);
+            }
+
+            let isCurrentOrderCorrect = true;
+            for (let i = 0; i < userSequence.length; i++) {
+                if (userSequence[i] !== correctOrder[i]) {
+                    isCurrentOrderCorrect = false;
+                    break;
+                }
+            }
+
+            if (isCurrentOrderCorrect) {
+                if (userSequence.length === correctOrder.length) {
+                    msg.innerText = "Perfekt! Der gesamte Satz ist richtig!";
+                    msg.className = "feedback correct";
+                } else {
+                    msg.innerText = "Bisher absolut richtig! Weiter so...";
+                    msg.className = "feedback correct";
+                }
+            } else {
+                msg.innerText = "Das passt an dieser Stelle noch nicht ganz.";
+                msg.className = "feedback incorrect";
+            }
+        }
+    </script>
+</body>
+</html>
